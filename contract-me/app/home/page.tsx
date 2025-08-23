@@ -201,9 +201,12 @@ export default function HomePage() {
                     <p className="text-green-700 text-sm mb-3">
                       Looking for work opportunities?
                     </p>
-                    <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                    <Link
+                      href="/jobs"
+                      className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm"
+                    >
                       View Available Jobs
-                    </button>
+                    </Link>
                   </div>
                 )}
               </div>

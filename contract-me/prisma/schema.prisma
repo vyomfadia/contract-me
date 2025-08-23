@@ -18,21 +18,6 @@ enum Role {
   CONTRACTOR
 }
 
-model User {
-  id          String   @id @default(cuid())
-  email       String   @unique
-  username    String   @unique
-  phoneNumber String?
-  password    String
-  role        Role     @default(USER)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  issues      Issue[]
-
-  @@map("users")
-}
-
 enum IssueStatus {
   SUBMITTED
   ANALYZING
@@ -43,6 +28,22 @@ enum IssueStatus {
   CANCELLED
 }
 
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  username    String   @unique
+  phoneNumber String?
+  password    String
+  role        Role     @default(USER)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  issues                Issue[]
+  claimedEnrichedIssues EnrichedIssue[]
+
+  @@map("users")
+}
+
 model Issue {
   id          String      @id @default(cuid())
   title       String?
@@ -51,8 +52,39 @@ model Issue {
   userId      String
   user        User        @relation(fields: [userId], references: [id])
   attachments String[]
+  enriched    EnrichedIssue?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   @@map("issues")
+}
+
+model EnrichedIssue {
+  id                        String   @id @default(cuid())
+  issueId                   String   @unique
+  issue                     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  
+  // OpenAI Analysis Results
+  identifiedProblem         String
+  repairSolution            String
+  estimatedTimeHours        Float?
+  difficultyLevel           String   // "Easy", "Medium", "Hard", "Expert"
+  
+  // Items and Costs
+  requiredItems             Json     // Array of {name: string, estimatedCost: number, quantity?: number, unit?: string}
+  totalEstimatedCost        Float?
+  
+  // Additional Information
+  questionsForUser          String[] // Things to ask the customer for clarification
+  contractorChecklist       String[] // Things contractor should verify on-site
+  
+  // Contractor Assignment
+  claimedByContractorId     String?
+  claimedAt                 DateTime?
+  contractorUser            User?    @relation(fields: [claimedByContractorId], references: [id])
+  
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@map("enriched_issues")
 }
