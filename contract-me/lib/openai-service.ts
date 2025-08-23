@@ -8,15 +8,13 @@ const openai = new OpenAI({
 export interface EnrichmentResult {
   identifiedProblem: string;
   repairSolution: string;
-  estimatedTimeHours?: number;
+  estimatedTimeHours: number;
   difficultyLevel: "Easy" | "Medium" | "Hard" | "Expert";
   requiredItems: Array<{
     name: string;
     estimatedCost: number;
-    quantity?: number;
-    unit?: string;
   }>;
-  totalEstimatedCost?: number;
+  totalEstimatedCost: number;
   questionsForUser: string[];
   contractorChecklist: string[];
 }
@@ -81,7 +79,7 @@ Provide only valid JSON response, no additional text.`;
         {
           role: "system",
           content:
-            "You are a professional contractor and home repair expert. Respond only with valid JSON.",
+            "You are a professional contractor and home repair expert. Analyze customer issues and provide structured assessments.",
         },
         {
           role: "user",
@@ -90,6 +88,72 @@ Provide only valid JSON response, no additional text.`;
       ],
       temperature: 0.3,
       max_tokens: 2000,
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "issue_analysis",
+          strict: true,
+          schema: {
+            type: "object",
+            properties: {
+              identifiedProblem: {
+                type: "string",
+                description: "Clear, specific identification of the problem"
+              },
+              repairSolution: {
+                type: "string",
+                description: "Step-by-step solution with professional recommendations"
+              },
+              estimatedTimeHours: {
+                type: "number",
+                description: "Realistic time estimate in hours"
+              },
+              difficultyLevel: {
+                type: "string",
+                enum: ["Easy", "Medium", "Hard", "Expert"],
+                description: "Based on DIY vs professional requirements"
+              },
+              requiredItems: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    name: { type: "string" },
+                    estimatedCost: { type: "number" }
+                  },
+                  required: ["name", "estimatedCost"],
+                  additionalProperties: false
+                }
+              },
+              totalEstimatedCost: {
+                type: "number",
+                description: "Sum of all item costs"
+              },
+              questionsForUser: {
+                type: "array",
+                items: { type: "string" },
+                description: "Questions to clarify scope or requirements"
+              },
+              contractorChecklist: {
+                type: "array",
+                items: { type: "string" },
+                description: "Things contractor should verify on-site"
+              }
+            },
+            required: [
+              "identifiedProblem",
+              "repairSolution",
+              "estimatedTimeHours", 
+              "difficultyLevel",
+              "requiredItems",
+              "totalEstimatedCost",
+              "questionsForUser",
+              "contractorChecklist"
+            ],
+            additionalProperties: false
+          }
+        }
+      }
     });
 
     const responseContent = completion.choices[0]?.message?.content;
