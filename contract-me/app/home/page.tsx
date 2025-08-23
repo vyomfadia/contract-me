@@ -220,6 +220,30 @@ export default function HomePage() {
               </div>
             </div>
           </div>
+
+          <div className="mt-6 bg-white overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+                Development Tools
+              </h3>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="bg-purple-50 p-4 rounded-lg">
+                  <h4 className="font-medium text-purple-900 mb-2">
+                    SixtyFour AI Integration
+                  </h4>
+                  <p className="text-purple-700 text-sm mb-3">
+                    Test contractor profile enrichment with SixtyFour AI
+                  </p>
+                  <Link
+                    href="/test-sixtyfour"
+                    className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm"
+                  >
+                    Test SixtyFour
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
