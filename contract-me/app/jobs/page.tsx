@@ -230,9 +230,63 @@ export default function JobsPage() {
         {job.issue.attachments.length > 0 && (
           <div>
             <h4 className="font-medium text-gray-900 mb-2">Attachments</h4>
-            <p className="text-sm text-gray-600">
-              {job.issue.attachments.length} files available
-            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {job.issue.attachments.map((attachment, index) => {
+                const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(attachment)
+                const isVideo = /\.(mp4|webm|mov|avi)$/i.test(attachment)
+                
+                return (
+                  <div key={index} className="border rounded-lg overflow-hidden">
+                    {isImage ? (
+                      <div>
+                        <img 
+                          src={attachment} 
+                          alt={`Attachment ${index + 1}`}
+                          className="w-full h-32 object-cover cursor-pointer hover:opacity-90"
+                          onClick={() => window.open(attachment, '_blank')}
+                        />
+                        <div className="p-2 bg-gray-50">
+                          <p className="text-xs text-gray-600 truncate">
+                            {attachment.split('/').pop()}
+                          </p>
+                        </div>
+                      </div>
+                    ) : isVideo ? (
+                      <div>
+                        <video 
+                          className="w-full h-32 object-cover"
+                          controls
+                          preload="metadata"
+                        >
+                          <source src={attachment} />
+                          Your browser does not support video playback.
+                        </video>
+                        <div className="p-2 bg-gray-50">
+                          <p className="text-xs text-gray-600 truncate">
+                            {attachment.split('/').pop()}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-gray-100 h-32 flex items-center justify-center">
+                        <div className="text-center">
+                          <div className="text-2xl mb-1">📁</div>
+                          <p className="text-xs text-gray-600 truncate">
+                            {attachment.split('/').pop()}
+                          </p>
+                          <button
+                            onClick={() => window.open(attachment, '_blank')}
+                            className="text-xs text-blue-600 hover:underline mt-1"
+                          >
+                            View File
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
 
@@ -244,7 +298,7 @@ export default function JobsPage() {
           </p>
         </div>
 
-        {showClaimButton && (
+        {showClaimButton ? (
           <button
             onClick={() => claimJob(job.id)}
             disabled={claimingJobs.has(job.id)}
@@ -252,6 +306,18 @@ export default function JobsPage() {
           >
             {claimingJobs.has(job.id) ? "Claiming..." : "Claim Job"}
           </button>
+        ) : (
+          <div className="space-y-2">
+            <Link
+              href={`/chat?jobId=${job.id}`}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-medium text-center block"
+            >
+              🔧 Chat with Repair Assistant
+            </Link>
+            <p className="text-xs text-gray-600 text-center">
+              Get step-by-step guidance and video assistance
+            </p>
+          </div>
         )}
       </div>
     </div>
