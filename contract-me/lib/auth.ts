@@ -21,6 +21,7 @@ export interface JWTPayload {
   email: string
   username: string
   role: Role
+  exp?: number
 }
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
