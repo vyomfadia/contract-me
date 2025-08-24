@@ -10,6 +10,11 @@ export default function SubmitIssuePage() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    priority: "NORMAL",
+    jobStreet: "",
+    jobCity: "",
+    jobState: "",
+    jobZipCode: "",
   });
   const [attachments, setAttachments] = useState<string[]>([]);
   const [uploadingFiles, setUploadingFiles] = useState<Set<string>>(new Set());
@@ -51,7 +56,7 @@ export default function SubmitIssuePage() {
       }
 
       setSuccess(true);
-      setFormData({ title: "", description: "" });
+      setFormData({ title: "", description: "", priority: "NORMAL", jobStreet: "", jobCity: "", jobState: "", jobZipCode: "" });
       setAttachments([]);
       setTimeout(() => {
         router.push("/home");
@@ -64,7 +69,7 @@ export default function SubmitIssuePage() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     setFormData((prev) => ({
       ...prev,
@@ -275,6 +280,79 @@ export default function SubmitIssuePage() {
                 <p className="mt-2 text-sm text-gray-500">
                   The more details you provide, the better we can match you with
                   the right contractor and estimate costs.
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="priority"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Priority Level
+                </label>
+                <select
+                  id="priority"
+                  name="priority"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  value={formData.priority}
+                  onChange={handleChange}
+                >
+                  <option value="LOW">Low - Can wait a few weeks</option>
+                  <option value="NORMAL">Normal - Within next week</option>
+                  <option value="URGENT">Urgent - Within 1-2 days</option>
+                  <option value="EMERGENCY">Emergency - Immediate attention needed</option>
+                </select>
+                <p className="mt-2 text-sm text-gray-500">
+                  This helps us prioritize your request and find contractors with appropriate availability.
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Job Location (if different from your address)
+                </label>
+                <div className="grid grid-cols-1 gap-4">
+                  <div>
+                    <input
+                      name="jobStreet"
+                      type="text"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="Street Address (optional)"
+                      value={formData.jobStreet}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <input
+                      name="jobCity"
+                      type="text"
+                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="City (optional)"
+                      value={formData.jobCity}
+                      onChange={handleChange}
+                    />
+                    <input
+                      name="jobState"
+                      type="text"
+                      className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="State (optional)"
+                      value={formData.jobState}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <input
+                      name="jobZipCode"
+                      type="text"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="ZIP Code (optional)"
+                      value={formData.jobZipCode}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                <p className="mt-2 text-sm text-gray-500">
+                  Leave blank to use your registered address. Only fill if the job is at a different location.
                 </p>
               </div>
 

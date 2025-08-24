@@ -18,6 +18,9 @@ interface Job {
     unit?: string;
   }>;
   totalEstimatedCost?: number;
+  laborCost?: number;
+  materialsCost?: number;
+  totalQuotedPrice?: number;
   questionsForUser: string[];
   contractorChecklist: string[];
   claimedByContractorId?: string;
@@ -26,13 +29,22 @@ interface Job {
     id: string;
     title?: string;
     description: string;
+    priority: string;
     attachments: string[];
     createdAt: string;
+    jobStreet?: string;
+    jobCity?: string;
+    jobState?: string;
+    jobZipCode?: string;
     user: {
       id: string;
       username: string;
       email: string;
       phoneNumber?: string;
+      street?: string;
+      city?: string;
+      state?: string;
+      zipCode?: string;
     };
   };
 }
@@ -126,6 +138,21 @@ export default function JobsPage() {
     }
   };
 
+  const getPriorityColor = (priority: string) => {
+    switch (priority.toLowerCase()) {
+      case "emergency":
+        return "bg-red-100 text-red-800";
+      case "urgent":
+        return "bg-orange-100 text-orange-800";
+      case "normal":
+        return "bg-blue-100 text-blue-800";
+      case "low":
+        return "bg-gray-100 text-gray-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -151,14 +178,19 @@ export default function JobsPage() {
             {new Date(job.issue.createdAt).toLocaleDateString()}
           </p>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
+          <span
+            className={`px-2 py-1 text-xs font-semibold rounded-full ${getPriorityColor(job.issue.priority)}`}
+          >
+            {job.issue.priority}
+          </span>
           <span
             className={`px-2 py-1 text-xs font-semibold rounded-full ${getDifficultyColor(job.difficultyLevel)}`}
           >
             {job.difficultyLevel}
           </span>
           {job.estimatedTimeHours && (
-            <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full">
+            <span className="px-2 py-1 text-xs bg-purple-100 text-purple-800 rounded-full">
               ~{job.estimatedTimeHours}h
             </span>
           )}
@@ -166,6 +198,20 @@ export default function JobsPage() {
       </div>
 
       <div className="space-y-4">
+        {/* Job Location */}
+        <div className="bg-blue-50 p-3 rounded-lg">
+          <h4 className="font-medium text-blue-900 mb-1 text-sm">📍 Job Location</h4>
+          <p className="text-blue-800 text-sm">
+            {job.issue.jobStreet || job.issue.user.street ? (
+              <>
+                {job.issue.jobStreet || job.issue.user.street}, {job.issue.jobCity || job.issue.user.city}, {job.issue.jobState || job.issue.user.state} {job.issue.jobZipCode || job.issue.user.zipCode}
+              </>
+            ) : (
+              'Address to be provided'
+            )}
+          </p>
+        </div>
+
         <div>
           <h4 className="font-medium text-gray-900 mb-2">Problem Identified</h4>
           <p className="text-gray-700 text-sm">{job.identifiedProblem}</p>
@@ -174,6 +220,31 @@ export default function JobsPage() {
         <div>
           <h4 className="font-medium text-gray-900 mb-2">Repair Solution</h4>
           <p className="text-gray-700 text-sm">{job.repairSolution}</p>
+        </div>
+
+        {/* Cost Breakdown */}
+        <div className="bg-green-50 p-4 rounded-lg">
+          <h4 className="font-medium text-green-900 mb-3 text-sm">💰 Cost Estimate</h4>
+          <div className="space-y-2">
+            {job.materialsCost && (
+              <div className="flex justify-between text-sm">
+                <span className="text-green-800">Materials Cost:</span>
+                <span className="font-medium text-green-900">{formatCurrency(job.materialsCost)}</span>
+              </div>
+            )}
+            {job.laborCost && (
+              <div className="flex justify-between text-sm">
+                <span className="text-green-800">Labor Cost:</span>
+                <span className="font-medium text-green-900">{formatCurrency(job.laborCost)}</span>
+              </div>
+            )}
+            {job.totalQuotedPrice && (
+              <div className="flex justify-between text-sm font-bold border-t border-green-200 pt-2 mt-2">
+                <span className="text-green-900">Total Price:</span>
+                <span className="text-green-900">{formatCurrency(job.totalQuotedPrice)}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {job.requiredItems.length > 0 && (
@@ -191,12 +262,6 @@ export default function JobsPage() {
                   </span>
                 </div>
               ))}
-              {job.totalEstimatedCost && (
-                <div className="flex justify-between text-sm font-semibold border-t pt-1 mt-2">
-                  <span>Total Estimated Cost</span>
-                  <span>{formatCurrency(job.totalEstimatedCost)}</span>
-                </div>
-              )}
             </div>
           </div>
         )}

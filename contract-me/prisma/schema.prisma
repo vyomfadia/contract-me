@@ -28,6 +28,32 @@ enum IssueStatus {
   CANCELLED
 }
 
+enum IssuePriority {
+  EMERGENCY
+  URGENT
+  NORMAL
+  LOW
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model User {
   id          String   @id @default(cuid())
   email       String   @unique
@@ -35,12 +61,24 @@ model User {
   phoneNumber String?
   password    String
   role        Role     @default(USER)
+  
+  // Address Information
+  street      String?
+  city        String?
+  state       String?
+  zipCode     String?
+  latitude    Float?
+  longitude   Float?
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
-  issues                Issue[]
-  claimedEnrichedIssues EnrichedIssue[]
-  callRequests          CallRequest[]
+  issues                  Issue[]
+  claimedEnrichedIssues   EnrichedIssue[]
+  callRequests            CallRequest[]
+  availability            ContractorAvailability[]
+  contractorAppointments  Appointment[] @relation("ContractorAppointments")
+  customerAppointments    Appointment[] @relation("CustomerAppointments")
 
   @@map("users")
 }
@@ -71,16 +109,27 @@ model CallRequest {
 }
 
 model Issue {
-  id          String      @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String?
   description String
-  status      IssueStatus @default(SUBMITTED)
+  status      IssueStatus   @default(SUBMITTED)
+  priority    IssuePriority @default(NORMAL)
   userId      String
-  user        User        @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
   attachments String[]
+  
+  // Job Location (can override user's address)
+  jobStreet   String?
+  jobCity     String?
+  jobState    String?
+  jobZipCode  String?
+  jobLatitude Float?
+  jobLongitude Float?
+  
   enriched    EnrichedIssue?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  appointments Appointment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 
   @@map("issues")
 }
@@ -99,6 +148,9 @@ model EnrichedIssue {
   // Items and Costs
   requiredItems             Json     // Array of {name: string, estimatedCost: number, quantity?: number, unit?: string}
   totalEstimatedCost        Float?
+  laborCost                 Float?
+  materialsCost             Float?
+  totalQuotedPrice          Float?    // Final price contractor will charge
   
   // Additional Information
   questionsForUser          String[] // Things to ask the customer for clarification
@@ -113,4 +165,46 @@ model EnrichedIssue {
   updatedAt                 DateTime @updatedAt
 
   @@map("enriched_issues")
+}
+
+model ContractorAvailability {
+  id           String    @id @default(cuid())
+  contractorId String
+  contractor   User      @relation(fields: [contractorId], references: [id], onDelete: Cascade)
+  dayOfWeek    DayOfWeek
+  startTime    String    // "09:00" format
+  endTime      String    // "17:00" format
+  isAvailable  Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@unique([contractorId, dayOfWeek, startTime])
+  @@map("contractor_availability")
+}
+
+model Appointment {
+  id                String            @id @default(cuid())
+  issueId           String
+  issue             Issue             @relation(fields: [issueId], references: [id])
+  contractorId      String
+  contractor        User              @relation("ContractorAppointments", fields: [contractorId], references: [id])
+  customerId        String
+  customer          User              @relation("CustomerAppointments", fields: [customerId], references: [id])
+  
+  scheduledDate     DateTime
+  estimatedDuration Int               // minutes
+  status            AppointmentStatus @default(SCHEDULED)
+  
+  // Cost Information
+  quotedPrice       Float?
+  finalPrice        Float?
+  
+  // Notes
+  contractorNotes   String?
+  customerNotes     String?
+  
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+
+  @@map("appointments")
 }

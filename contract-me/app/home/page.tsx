@@ -209,12 +209,20 @@ export default function HomePage() {
                     <p className="text-green-700 text-sm mb-3">
                       Looking for work opportunities?
                     </p>
-                    <Link
-                      href="/jobs"
-                      className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm"
-                    >
-                      View Available Jobs
-                    </Link>
+                    <div className="space-y-2">
+                      <Link
+                        href="/jobs"
+                        className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm mr-2"
+                      >
+                        View Available Jobs
+                      </Link>
+                      <Link
+                        href="/availability"
+                        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+                      >
+                        ⏰ Manage Schedule
+                      </Link>
+                    </div>
                   </div>
                 )}
               </div>

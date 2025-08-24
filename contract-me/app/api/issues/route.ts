@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 export const POST = withAuth(async (request) => {
   try {
     const body = await request.json();
-    const { title, description, attachments = [] } = body;
+    const { title, description, attachments = [], priority = "NORMAL", jobStreet, jobCity, jobState, jobZipCode } = body;
     const userId = request.user?.userId;
 
     if (!userId) {
@@ -26,8 +26,13 @@ export const POST = withAuth(async (request) => {
       data: {
         title: title?.trim() || null,
         description: description.trim(),
+        priority: priority as any,
         attachments: attachments,
         userId,
+        jobStreet: jobStreet?.trim() || null,
+        jobCity: jobCity?.trim() || null,
+        jobState: jobState?.trim() || null,
+        jobZipCode: jobZipCode?.trim() || null,
       },
       include: {
         user: {

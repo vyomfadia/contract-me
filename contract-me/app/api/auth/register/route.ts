@@ -5,7 +5,7 @@ import { Role } from "@prisma/client";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, username, password, phoneNumber, role = "USER" } = body;
+    const { email, username, password, phoneNumber, role = "USER", street, city, state, zipCode } = body;
 
     if (!email || !username || !password) {
       return NextResponse.json(
@@ -20,6 +20,10 @@ export async function POST(request: NextRequest) {
       password,
       phoneNumber,
       role: role as Role,
+      street,
+      city,
+      state,
+      zipCode,
     });
 
     return NextResponse.json(

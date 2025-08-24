@@ -15,6 +15,9 @@ export interface EnrichmentResult {
     estimatedCost: number;
   }>;
   totalEstimatedCost: number;
+  laborCost: number;
+  materialsCost: number;
+  totalQuotedPrice: number;
   questionsForUser: string[];
   contractorChecklist: string[];
 }
@@ -47,7 +50,10 @@ Please provide a detailed analysis in JSON format with the following structure:
       "unit": "pieces" // optional: pieces, feet, gallons, etc.
     }
   ],
-  "totalEstimatedCost": 150.99, // Sum of all item costs
+  "totalEstimatedCost": 150.99, // Sum of all material item costs only
+  "laborCost": 200.00, // Labor cost based on estimated hours and skill level
+  "materialsCost": 150.99, // Same as totalEstimatedCost (materials only)
+  "totalQuotedPrice": 350.99, // laborCost + materialsCost
   "questionsForUser": [
     "What specific questions would help clarify the scope?",
     "Any additional details needed from customer?"
@@ -62,6 +68,11 @@ Please provide a detailed analysis in JSON format with the following structure:
 Guidelines:
 - Be realistic with cost estimates (use current market prices)
 - Consider regional variations but use average US prices
+- Labor cost should be: estimatedTimeHours * hourly rate based on difficulty:
+  * Easy: $40-60/hour
+  * Medium: $60-80/hour
+  * Hard: $80-120/hour
+  * Expert: $120-200/hour
 - Include safety considerations in contractor checklist
 - Ask clarifying questions that would affect scope/cost
 - Difficulty levels:
@@ -127,7 +138,19 @@ Provide only valid JSON response, no additional text.`;
               },
               totalEstimatedCost: {
                 type: "number",
-                description: "Sum of all item costs"
+                description: "Sum of all material item costs only"
+              },
+              laborCost: {
+                type: "number",
+                description: "Labor cost based on estimated hours and skill level"
+              },
+              materialsCost: {
+                type: "number",
+                description: "Same as totalEstimatedCost (materials only)"
+              },
+              totalQuotedPrice: {
+                type: "number",
+                description: "laborCost + materialsCost"
               },
               questionsForUser: {
                 type: "array",
@@ -147,6 +170,9 @@ Provide only valid JSON response, no additional text.`;
               "difficultyLevel",
               "requiredItems",
               "totalEstimatedCost",
+              "laborCost",
+              "materialsCost", 
+              "totalQuotedPrice",
               "questionsForUser",
               "contractorChecklist"
             ],
@@ -224,6 +250,9 @@ export async function enrichPendingIssues() {
             difficultyLevel: enrichmentResult.difficultyLevel,
             requiredItems: enrichmentResult.requiredItems,
             totalEstimatedCost: enrichmentResult.totalEstimatedCost,
+            laborCost: enrichmentResult.laborCost,
+            materialsCost: enrichmentResult.materialsCost,
+            totalQuotedPrice: enrichmentResult.totalQuotedPrice,
             questionsForUser: enrichmentResult.questionsForUser,
             contractorChecklist: enrichmentResult.contractorChecklist,
           },

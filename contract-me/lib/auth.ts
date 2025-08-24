@@ -9,6 +9,10 @@ export interface CreateUserInput {
   password: string;
   phoneNumber?: string;
   role?: Role;
+  street?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
 }
 
 export interface LoginInput {
@@ -53,7 +57,7 @@ export function verifyToken(token: string): JWTPayload | null {
 }
 
 export async function createUser(userData: CreateUserInput) {
-  const { email, username, password, phoneNumber, role = Role.USER } = userData;
+  const { email, username, password, phoneNumber, role = Role.USER, street, city, state, zipCode } = userData;
 
   const existingUser = await prisma.user.findFirst({
     where: {
@@ -79,6 +83,10 @@ export async function createUser(userData: CreateUserInput) {
       password: hashedPassword,
       phoneNumber,
       role,
+      street,
+      city,
+      state,
+      zipCode,
     },
     select: {
       id: true,
@@ -86,6 +94,10 @@ export async function createUser(userData: CreateUserInput) {
       username: true,
       phoneNumber: true,
       role: true,
+      street: true,
+      city: true,
+      state: true,
+      zipCode: true,
       createdAt: true,
     },
   });

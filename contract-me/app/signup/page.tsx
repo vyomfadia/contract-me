@@ -13,6 +13,10 @@ export default function SignupPage() {
     password: "",
     phoneNumber: "",
     role: "USER",
+    street: "",
+    city: "",
+    state: "",
+    zipCode: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -185,6 +189,85 @@ export default function SignupPage() {
                 <option value="USER">Customer</option>
                 <option value="CONTRACTOR">Contractor</option>
               </select>
+            </div>
+            
+            <div className="pt-4 border-t border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Address Information</h3>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label
+                    htmlFor="street"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Street Address
+                  </label>
+                  <input
+                    id="street"
+                    name="street"
+                    type="text"
+                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="123 Main St"
+                    value={formData.street}
+                    onChange={handleChange}
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="city"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      City
+                    </label>
+                    <input
+                      id="city"
+                      name="city"
+                      type="text"
+                      className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="City"
+                      value={formData.city}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  
+                  <div>
+                    <label
+                      htmlFor="state"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      State
+                    </label>
+                    <input
+                      id="state"
+                      name="state"
+                      type="text"
+                      className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                      placeholder="CA"
+                      value={formData.state}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+                
+                <div className="w-1/2">
+                  <label
+                    htmlFor="zipCode"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    ZIP Code
+                  </label>
+                  <input
+                    id="zipCode"
+                    name="zipCode"
+                    type="text"
+                    className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="12345"
+                    value={formData.zipCode}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
