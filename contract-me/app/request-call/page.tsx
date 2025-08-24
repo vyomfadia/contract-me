@@ -36,7 +36,7 @@ export default function RequestCallPage() {
     setFormData(prev => ({
       ...prev,
       customerName: currentUser.username || '',
-      phoneNumber: currentUser.phoneNumber ? formatPhoneNumber(currentUser.phoneNumber) : ''
+      phoneNumber: currentUser.phoneNumber ? formatPhoneNumber(currentUser.phoneNumber.replace(/^\+1/, '')) : ''
     }))
   }, [router])
 
