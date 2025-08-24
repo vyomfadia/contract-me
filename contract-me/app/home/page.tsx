@@ -193,9 +193,15 @@ export default function HomePage() {
                       </Link>
                       <Link
                         href="/request-call"
-                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm"
+                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm mr-2"
                       >
                         📞 Request Call
+                      </Link>
+                      <Link
+                        href="/find-contractors"
+                        className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm"
+                      >
+                        🔍 Find Contractors
                       </Link>
                     </div>
                   </div>
