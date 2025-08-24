@@ -97,8 +97,8 @@ export default function RequestCallPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gray-50">
-        <nav className="bg-white shadow">
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+        <nav className="bg-amber-50 shadow-lg border-b border-amber-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex items-center">
@@ -109,38 +109,38 @@ export default function RequestCallPage() {
         </nav>
 
         <div className="max-w-2xl mx-auto py-12 px-4">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-amber-50 rounded-lg shadow-lg border border-amber-200 p-6">
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
-                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 mb-4">
+                <svg className="h-8 w-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Call Request Submitted!</h2>
-              <div className="space-y-3 text-left bg-blue-50 p-4 rounded-lg mb-6">
-                <p className="text-blue-800">
+              <h2 className="text-2xl font-bold text-amber-800 mb-4">Call Request Submitted!</h2>
+              <div className="space-y-3 text-left bg-amber-50 p-4 rounded-lg mb-6 border border-amber-200">
+                <p className="text-amber-800">
                   <strong>📞 Expect our call:</strong> {callInfo?.estimatedTime || 'within a few minutes'}
                 </p>
-                <p className="text-blue-800">
+                <p className="text-amber-800">
                   <strong>📋 What to expect:</strong> Our AI assistant Sarah will call you to gather details about your repair issue
                 </p>
-                <p className="text-blue-800">
+                <p className="text-amber-800">
                   <strong>⏱️ Call duration:</strong> Usually 5-10 minutes
                 </p>
-                <p className="text-blue-800">
+                <p className="text-amber-800">
                   <strong>📝 After the call:</strong> We'll analyze your issue and connect you with a qualified contractor
                 </p>
               </div>
               
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+              <div className="bg-orange-50 border-l-4 border-orange-300 p-4 mb-6">
                 <div className="flex">
                   <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                    <svg className="h-5 w-5 text-orange-500" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm text-yellow-700">
+                    <p className="text-sm text-orange-700">
                       <strong>Please keep your phone nearby!</strong> Our system will call the number you provided ({formData.phoneNumber}) shortly.
                     </p>
                   </div>
@@ -150,13 +150,13 @@ export default function RequestCallPage() {
               <div className="space-y-2">
                 <Link
                   href="/home"
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded font-medium inline-block"
+                  className="w-full bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded font-medium inline-block"
                 >
                   Return to Home
                 </Link>
                 <Link
                   href="/submit-issue"
-                  className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded font-medium inline-block"
+                  className="w-full bg-amber-50 hover:bg-amber-100 text-amber-800 py-2 px-4 rounded font-medium inline-block border border-amber-200"
                 >
                   Or Submit Issue Online Instead
                 </Link>
@@ -169,12 +169,12 @@ export default function RequestCallPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link href="/home" className="text-xl font-semibold text-gray-900">ContractMe</Link>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+              <nav className="bg-amber-50 shadow-lg border-b border-amber-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between h-16">
+              <div className="flex items-center">
+                <Link href="/home" className="text-xl font-semibold text-amber-800">ContractMe</Link>
             </div>
             <div className="flex items-center">
               <Link 
@@ -189,15 +189,15 @@ export default function RequestCallPage() {
       </nav>
 
       <div className="max-w-2xl mx-auto py-12 px-4">
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-amber-50 rounded-lg shadow-lg border border-amber-200">
           <div className="px-6 py-8">
             <div className="text-center mb-8">
-              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 mb-4">
-                <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 mb-4">
+                <svg className="h-8 w-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Request a Call</h1>
+              <h1 className="text-3xl font-bold text-amber-800 mb-2">Request a Call</h1>
               <p className="text-gray-600">
                 We'll call you to understand your repair needs and connect you with the right contractor
               </p>
@@ -263,9 +263,9 @@ export default function RequestCallPage() {
                 </select>
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="font-medium text-blue-900 mb-2">📞 What happens during the call?</h3>
-                <ul className="text-blue-800 text-sm space-y-1">
+              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                <h3 className="font-medium text-amber-900 mb-2">📞 What happens during the call?</h3>
+                <ul className="text-amber-800 text-sm space-y-1">
                   <li>• Sarah, our AI assistant, will call you</li>
                   <li>• She'll ask about your repair issue in detail</li>
                   <li>• The call usually takes 5-10 minutes</li>
@@ -278,7 +278,7 @@ export default function RequestCallPage() {
                 <button
                   type="submit"
                   disabled={loading || !formData.phoneNumber.trim()}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
+                  className="flex-1 bg-amber-600 hover:bg-amber-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-md font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 flex items-center justify-center space-x-2"
                 >
                   {loading ? (
                     <>
@@ -297,7 +297,7 @@ export default function RequestCallPage() {
                 </button>
                 <Link
                   href="/submit-issue"
-                  className="px-6 py-3 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 font-medium text-center"
+                  className="px-6 py-3 border border-amber-300 rounded-md text-amber-700 hover:bg-amber-50 font-medium text-center"
                 >
                   Submit Online Instead
                 </Link>

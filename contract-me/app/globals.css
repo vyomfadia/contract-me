@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fefcf7;
+  --foreground: #2d1b0e;
+  --primary: #8b5a3c;
+  --primary-dark: #6b4423;
+  --secondary: #d4a574;
+  --accent: #a67c52;
+  --gradient-primary: linear-gradient(135deg, #8b5a3c 0%, #a67c52 100%);
+  --gradient-secondary: linear-gradient(135deg, #d4a574 0%, #c19a6b 100%);
+  --gradient-accent: linear-gradient(135deg, #a67c52 0%, #8b5a3c 100%);
+  --shadow-sm: 0 1px 3px 0 rgb(139 90 60 / 0.1);
+  --shadow-md: 0 4px 8px -1px rgb(139 90 60 / 0.15), 0 2px 4px -2px rgb(139 90 60 / 0.1);
+  --shadow-lg: 0 10px 20px -3px rgb(139 90 60 / 0.2), 0 4px 6px -4px rgb(139 90 60 / 0.1);
+  --shadow-xl: 0 20px 30px -5px rgb(139 90 60 / 0.25), 0 8px 10px -6px rgb(139 90 60 / 0.1);
 }
 
 @theme inline {
@@ -14,13 +25,186 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #2d1b0e;
+    --foreground: #f5f1eb;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f1eb;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4a574;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a67c52;
+}
+
+/* Smooth animations */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom button styles */
+.btn-primary {
+  background: var(--gradient-primary);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+  background: var(--gradient-secondary);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Card styles */
+.card {
+  background: #fefcf7;
+  border: 1px solid #e8dcc0;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: #d4a574;
+}
+
+/* Input styles */
+.input-modern {
+  border: 2px solid #e8dcc0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #fefcf7;
+}
+
+.input-modern:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 90, 60, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Modern form styles */
+.form-modern {
+  background: #fefcf7;
+  border-radius: 20px;
+  box-shadow: var(--shadow-xl);
+  padding: 32px;
+  border: 1px solid #e8dcc0;
+}
+
+/* Status badges */
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #a67c52, #8b5a3c);
+  color: white;
+}
+
+.badge-warning {
+  background: linear-gradient(135deg, #d4a574, #c19a6b);
+  color: #2d1b0e;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #c19a6b, #a67c52);
+  color: white;
+}
+
+.badge-info {
+  background: linear-gradient(135deg, #8b5a3c, #6b4423);
+  color: white;
 }
