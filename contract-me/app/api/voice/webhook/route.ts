@@ -15,9 +15,9 @@ export async function POST(request: NextRequest) {
     console.log('Received VAPI webhook:', JSON.stringify(webhookData, null, 2))
 
     // Check if this is a call end event with analysis
-    const { type, call } = webhookData
-    
-    if (type !== 'call-end' || !call?.analysis?.structuredData) {
+    const { type, analysis, call } = webhookData.message
+
+    if (type !== 'end-of-call-report' || !analysis?.structuredData) {
       console.log('Webhook is not a call-end event or missing analysis data')
       return NextResponse.json({ received: true })
     }
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     // Find the call request in our database
     const callRequest = await prisma.callRequest.findFirst({
       where: { 
-        vapiCallId: call.id 
+        vapiCallId: call.id
       },
       include: {
         user: true

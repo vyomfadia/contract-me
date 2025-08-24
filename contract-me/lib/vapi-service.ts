@@ -57,14 +57,14 @@ export const initiateIssueCollectionCall = async (phoneNumber: string, customerN
 // Process webhook data from VAPI call completion
 export const processCallResults = (webhookData: any): IssueExtractionData | null => {
 	try {
-		const {call} = webhookData
+		const {analysis} = webhookData.message
 
-		if (!call?.analysis?.structuredData) {
+		if (!analysis?.structuredData) {
 			console.error('No structured data found in webhook')
 			return null
 		}
 
-		const extractedData = call.analysis.structuredData as IssueExtractionData
+		const extractedData = analysis.structuredData as IssueExtractionData
 
 		// Validate required fields
 		if (!extractedData.issueDescription || !extractedData.phoneNumber) {
@@ -177,101 +177,8 @@ export const sendJobAssignmentNotification = async (
 
 // VAPI Assistant for offering jobs to contractors
 export const createContractorJobOfferAssistant = async () => {
-	const assistantConfig = {
-		name: "ContractMe Contractor Job Offer",
-		model: {
-			provider: "openai",
-			model: "gpt-4o",
-			temperature: 0.7,
-			messages: [
-				{
-					role: "system" as const,
-					content: `You are a professional representative from ContractMe calling a contractor with a job opportunity that matches their skills and preferences.
-
-CONVERSATION FLOW:
-1. Greet the contractor professionally and confirm their identity
-2. Briefly explain you're calling from ContractMe with a job opportunity
-3. Present the job details clearly (type, location, estimated value, timeline)
-4. Ask if they're interested and available for this appointment time
-5. If YES: Confirm they accept the job and will contact the customer
-6. If NO: Thank them politely and end the call
-7. Keep the call brief and professional (under 2 minutes)
-
-IMPORTANT INFORMATION TO PROVIDE:
-- Job type and description
-- Customer location (general area)
-- Estimated job value
-- Proposed appointment time
-- Customer contact information (if job accepted)
-
-TONE:
-- Professional and respectful
-- Clear and concise
-- Acknowledge their expertise
-- Enthusiastic about the opportunity
-
-DECISION HANDLING:
-- If they accept: Get confirmation they'll contact the customer and be available for the appointment
-- If they decline: Thank them and let them know about future opportunities
-- If unsure: Give them brief time to consider but need an answer
-
-Remember: You're calling because this job matches their listed skills and preferences.`
-				}
-			]
-		},
-		voice: {
-			provider: "11labs",
-			voiceId: "sarah",
-			speed: 1.0,
-			stability: 0.5,
-			similarityBoost: 0.5
-		},
-		firstMessage: "Hi! This is Sarah from ContractMe. I hope I'm catching you at a good time. I'm calling because we have a job opportunity that matches your skills perfectly. Do you have a moment to hear about it?",
-		transcriber: {
-			provider: "deepgram",
-			model: "nova-2",
-			language: "en-US"
-		},
-		analysisPlan: {
-			summaryPrompt: "Summarize this contractor job offer call, focusing on whether they accepted or declined the job opportunity and any important details discussed.",
-			structuredDataPrompt: "Extract the contractor's response to the job offer.",
-			structuredDataSchema: {
-				type: "object",
-				properties: {
-					jobAccepted: {
-						type: "boolean",
-						description: "Whether the contractor accepted the job"
-					},
-					contractorResponse: {
-						type: "string",
-						enum: ["accepted", "declined", "needs_time", "unavailable"],
-						description: "Contractor's response to the job offer"
-					},
-					reasonForDecline: {
-						type: "string",
-						description: "Reason given for declining, if applicable"
-					},
-					additionalNotes: {
-						type: "string",
-						description: "Any other important information from the call"
-					},
-					enrichedIssueId: {
-						type: "string",
-						description: "The job ID that was offered"
-					}
-				},
-				required: ["jobAccepted", "contractorResponse", "enrichedIssueId"],
-				additionalProperties: false
-			}
-		},
-		endCallMessage: "Thank you for your time! We appreciate working with skilled contractors like you. Have a great day!",
-		recordingEnabled: true,
-		maxDurationSeconds: 180, // 3 minute max
-		silenceTimeoutSeconds: 15,
-	}
-
 	try {
-		return await vapi.assistants.create(assistantConfig)
+		return await vapi.assistants.get("94f6d812-ed80-443c-9c79-6ad77bea03f2")
 	} catch (error) {
 		console.error('Error creating contractor job offer assistant:', error)
 		throw error

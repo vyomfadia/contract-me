@@ -1,5 +1,6 @@
 import { prisma } from './prisma'
 import { sendContractorJobOffer } from './vapi-service'
+import { Role } from '@prisma/client'
 
 interface MatchingCriteria {
   skills: string[]
@@ -43,7 +44,7 @@ export async function findMatchingContractors(
     const whereClause: any = {
       acceptAutoAssignment: true,
       contractor: {
-        role: { in: ['CONTRACTOR', 'BOTH'] },
+        role: { in: [Role.CONTRACTOR, Role.BOTH] },
         phoneNumber: { not: null }, // Must have phone for auto-calling
       }
     }
