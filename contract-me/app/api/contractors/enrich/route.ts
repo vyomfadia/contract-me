@@ -22,11 +22,13 @@ export const POST = withAuth(async (request) => {
       linkedin
     };
 
+    console.log('API Route - Contractor Info:', contractorInfo);
+
     const enrichedData = await enrichContractorProfile(contractorInfo);
 
     if (!enrichedData) {
       return NextResponse.json(
-        { error: "Failed to enrich contractor profile" },
+        { error: "Failed to enrich contractor profile - no data returned" },
         { status: 500 }
       );
     }
@@ -37,8 +39,9 @@ export const POST = withAuth(async (request) => {
     });
   } catch (error) {
     console.error("Contractor enrichment error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to enrich contractor profile";
     return NextResponse.json(
-      { error: "Failed to enrich contractor profile" },
+      { error: errorMessage },
       { status: 500 }
     );
   }

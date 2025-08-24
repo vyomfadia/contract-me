@@ -24,38 +24,51 @@ export interface EnrichedContractorData {
 
 export async function enrichContractorProfile(contractorInfo: ContractorInfo): Promise<EnrichedContractorData | null> {
   try {
+    console.log('SixtyFour API Key:', process.env.SIXTYFOUR_API_KEY ? 'Present' : 'Missing');
+    console.log('Contractor Info:', contractorInfo);
+    
+    const requestBody = {
+      lead_info: contractorInfo,
+      struct: {
+        name: "The contractor's full name",
+        email: "Verified email address",
+        phone: "Verified phone number", 
+        company: "Company name",
+        title: "Professional title",
+        linkedin: "LinkedIn profile URL",
+        website: "Company website",
+        location: "Service location",
+        industry: "Primary industry",
+        specializations: "List of specializations as array",
+        service_areas: "Geographic service areas as array",
+        verified_credentials: "Whether credentials are verified (boolean)",
+        confidence_score: "Confidence score of the data (number)"
+      }
+    };
+    
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
+    
     const response = await fetch('https://api.sixtyfour.ai/enrich-lead', {
       method: 'POST',
       headers: {
         'x-api-key': process.env.SIXTYFOUR_API_KEY!,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        lead_info: contractorInfo,
-        struct: {
-          name: "The contractor's full name",
-          email: "Verified email address",
-          phone: "Verified phone number", 
-          company: "Company name",
-          title: "Professional title",
-          linkedin: "LinkedIn profile URL",
-          website: "Company website",
-          location: "Service location",
-          industry: "Primary industry",
-          specializations: "List of specializations as array",
-          service_areas: "Geographic service areas as array",
-          verified_credentials: "Whether credentials are verified (boolean)",
-          confidence_score: "Confidence score of the data (number)"
-        }
-      })
+      body: JSON.stringify(requestBody)
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
     if (!response.ok) {
+      const errorText = await response.text();
       console.error('SixtyFour API error:', response.status, response.statusText);
-      return null;
+      console.error('Error response:', errorText);
+      throw new Error(`SixtyFour API error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('SixtyFour response:', JSON.stringify(data, null, 2));
     
     // Parse the structured data
     const structuredData = data.structured_data || {};
@@ -81,7 +94,7 @@ export async function enrichContractorProfile(contractorInfo: ContractorInfo): P
     };
   } catch (error) {
     console.error('Error enriching contractor profile:', error);
-    return null;
+    throw error; // Re-throw to get better error messages
   }
 }
 
