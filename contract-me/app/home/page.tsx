@@ -185,23 +185,25 @@ export default function HomePage() {
                       Need help with repairs or maintenance?
                     </p>
                     <div className="space-y-2">
+                      <div className="flex gap-2">
+                        <Link
+                          href="/submit-issue"
+                          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+                        >
+                          Submit Online
+                        </Link>
+                        <Link
+                          href="/request-call"
+                          className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm"
+                        >
+                          📞 Request Call
+                        </Link>
+                      </div>
                       <Link
-                        href="/submit-issue"
-                        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm mr-2"
+                        href="/appointments"
+                        className="inline-block bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm w-full text-center"
                       >
-                        Submit Online
-                      </Link>
-                      <Link
-                        href="/request-call"
-                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm mr-2"
-                      >
-                        📞 Request Call
-                      </Link>
-                      <Link
-                        href="/find-contractors"
-                        className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm"
-                      >
-                        🔍 Find Contractors
+                        📅 My Appointments
                       </Link>
                     </div>
                   </div>
@@ -216,17 +218,31 @@ export default function HomePage() {
                       Looking for work opportunities?
                     </p>
                     <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        <Link
+                          href="/jobs"
+                          className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm text-center"
+                        >
+                          View Available Jobs
+                        </Link>
+                        <Link
+                          href="/availability"
+                          className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm text-center"
+                        >
+                          ⏰ Manage Schedule
+                        </Link>
+                        <Link
+                          href="/profile"
+                          className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm text-center"
+                        >
+                          👤 Edit Profile
+                        </Link>
+                      </div>
                       <Link
-                        href="/jobs"
-                        className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm mr-2"
+                        href="/appointments"
+                        className="inline-block bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded text-sm w-full text-center"
                       >
-                        View Available Jobs
-                      </Link>
-                      <Link
-                        href="/availability"
-                        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
-                      >
-                        ⏰ Manage Schedule
+                        📅 My Appointments
                       </Link>
                     </div>
                   </div>

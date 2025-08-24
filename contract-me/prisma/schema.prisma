@@ -79,6 +79,7 @@ model User {
   availability            ContractorAvailability[]
   contractorAppointments  Appointment[] @relation("ContractorAppointments")
   customerAppointments    Appointment[] @relation("CustomerAppointments")
+  contractorProfile       ContractorProfile?
 
   @@map("users")
 }
@@ -207,4 +208,50 @@ model Appointment {
   updatedAt         DateTime          @updatedAt
 
   @@map("appointments")
+}
+
+model ContractorProfile {
+  id                    String   @id @default(cuid())
+  contractorId          String   @unique
+  contractor            User     @relation(fields: [contractorId], references: [id], onDelete: Cascade)
+  
+  // Skills and Specialties
+  skills                String[] // ["plumbing", "electrical", "carpentry", "hvac", etc.]
+  specialties           String[] // ["bathroom remodeling", "kitchen renovation", etc.]
+  experienceYears       Int?
+  
+  // Certifications and Licenses
+  licenses              String[] // ["electrician license", "plumbing license", etc.]
+  certifications        String[] // ["HVAC certified", "EPA certified", etc.]
+  insuranceVerified     Boolean  @default(false)
+  bondedAndInsured      Boolean  @default(false)
+  
+  // Service Areas
+  serviceRadius         Int?     // miles from their location
+  serviceZipCodes       String[] // specific zip codes they serve
+  
+  // Business Info
+  businessName          String?
+  yearsInBusiness       Int?
+  employeeCount         Int?     // 1 for solo, more for company
+  
+  // Ratings and Reviews
+  averageRating         Float?
+  totalJobs             Int      @default(0)
+  completedJobs         Int      @default(0)
+  
+  // Preferences
+  preferredJobTypes     String[] // job difficulty levels they prefer
+  minimumJobValue       Float?   // minimum job value they'll accept
+  maximumJobsPerDay     Int?     // workload management
+  
+  // Contact preferences for auto-assignment
+  acceptAutoAssignment  Boolean  @default(false)
+  autoCallEnabled       Boolean  @default(false)
+  preferredContactTime  String?  // "morning", "afternoon", "evening"
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("contractor_profiles")
 }

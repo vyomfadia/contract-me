@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { prisma } from "./prisma";
+import { initiateContractorCalls } from "./contractor-matching";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -215,6 +216,15 @@ export async function enrichPendingIssues() {
         enriched: null,
         status: "SUBMITTED",
       },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            phoneNumber: true,
+          }
+        }
+      },
       take: 5, // Process max 5 at a time to avoid API rate limits
       orderBy: {
         createdAt: "asc", // Oldest first
@@ -263,6 +273,36 @@ export async function enrichPendingIssues() {
           where: { id: issue.id },
           data: { status: "PENDING_CONTRACTOR" },
         });
+
+        // Initiate automatic contractor calling
+        try {
+          const customerLocation = [
+            issue.jobCity || '',
+            issue.jobState || ''
+          ].filter(Boolean).join(', ') || 'Location TBD'
+
+          const callResult = await initiateContractorCalls(
+            enrichedIssue.id,
+            enrichmentResult.identifiedProblem,
+            enrichmentResult.repairSolution,
+            enrichmentResult.totalQuotedPrice,
+            issue.priority,
+            {
+              name: issue.user?.username || 'Customer',
+              location: customerLocation,
+              phone: issue.user?.phoneNumber
+            }
+          )
+
+          console.log(`Contractor calling result for issue ${issue.id}:`, {
+            success: callResult.success,
+            callsInitiated: callResult.callsInitiated,
+            errors: callResult.errors
+          })
+        } catch (callError) {
+          console.error(`Failed to initiate contractor calls for issue ${issue.id}:`, callError)
+          // Don't fail the enrichment if contractor calling fails
+        }
 
         results.push({
           issueId: issue.id,

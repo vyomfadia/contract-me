@@ -27,6 +27,9 @@ export const POST = withRoleAuth([Role.CONTRACTOR])(async (request) => {
     // Check if job is already claimed
     const existingJob = await prisma.enrichedIssue.findUnique({
       where: { id: enrichedIssueId },
+      include: {
+        issue: true
+      }
     });
 
     if (!existingJob) {
