@@ -184,12 +184,20 @@ export default function HomePage() {
                     <p className="text-blue-700 text-sm mb-3">
                       Need help with repairs or maintenance?
                     </p>
-                    <Link
-                      href="/submit-issue"
-                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
-                    >
-                      Submit a Request
-                    </Link>
+                    <div className="space-y-2">
+                      <Link
+                        href="/submit-issue"
+                        className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm mr-2"
+                      >
+                        Submit Online
+                      </Link>
+                      <Link
+                        href="/request-call"
+                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded text-sm"
+                      >
+                        📞 Request Call
+                      </Link>
+                    </div>
                   </div>
                 )}
 

@@ -20,6 +20,7 @@ export interface JWTPayload {
   userId: string;
   email: string;
   username: string;
+  phoneNumber?: string;
   role: Role;
   exp?: number;
 }
@@ -113,6 +114,7 @@ export async function loginUser(loginData: LoginInput) {
     userId: user.id,
     email: user.email,
     username: user.username,
+    phoneNumber: user.phoneNumber,
     role: user.role,
   };
 
