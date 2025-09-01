@@ -6,6 +6,10 @@ A contractor marketplace platform that connects homeowners with skilled contract
 
 ContractMe streamlines the process of finding and hiring contractors by using AI to analyze repair issues, match contractors, and automate communication. The platform handles the entire workflow from issue submission to contractor assignment.
 
+Won "Best Autonomous Agent" + 2nd Place Overall at [Brex AgentJam](https://luma.com/agentjam). 
+
+Demo video: https://drive.google.com/file/d/1FW4zwhs1E_8yNIxPShxd1ZEWAeiT6jT0/view?usp=sharing 
+
 ## Features
 
 - **AI-Powered Issue Analysis**: Uses OpenAI GPT-4 to analyze submitted issues and generate detailed repair solutions, cost estimates, and contractor requirements
